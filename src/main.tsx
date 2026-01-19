@@ -1,28 +1,51 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Provider } from "react-redux";
+import { store } from "./app/services/store.ts";
 import "./index.css";
 import App from "./app/App.tsx";
+import HomePage from "./app/pages/home/HomePage.tsx";
 import { ComponentExample } from "./app/components/forms/CreatePost.tsx";
 import PostPage from "./app/pages/post/PostPage.tsx";
 
-const router = createBrowserRouter([
+const router = createBrowserRouter(
+  [
+    {
+      path: "/",
+      element: <App />,
+      children: [
+        {
+          index: true,
+          element: <HomePage />,
+        },
+        {
+          path: "post/:id",
+          element: <PostPage />,
+        },
+        {
+          path: "create-post",
+          element: <ComponentExample />,
+        },
+      ],
+    },
+  ],
   {
-    path: "/",
-    element: <App />,
+    future: {
+      v7_normalizeFormMethod: true,
+    },
   },
-  {
-    path: "/post",
-    element: <PostPage />,
-  },
-  {
-    path: "/create-post",
-    element: <ComponentExample />,
-  },
-]);
+);
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider
+        router={router}
+        future={{
+          v7_startTransition: true,
+        }}
+      />
+    </Provider>
   </StrictMode>,
 );
