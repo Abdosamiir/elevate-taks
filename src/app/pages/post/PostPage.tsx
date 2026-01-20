@@ -40,7 +40,7 @@ const PostPage = () => {
   return (
     <div className=" shadow-lg mx-auto  h-screen flex flex-col items-start justify-center">
       <div
-        className="content-end p-6 backdrop-blur-md w-full h-full rounded-t-2xl"
+        className="content-end p-4 sm:p-6 lg:p-8 backdrop-blur-md w-full h-full rounded-t-2xl"
         style={{
           background:
             "linear-gradient(0deg, rgba(33, 96, 154, 0.75) 0%, rgba(0, 37, 74, 0.75) 100%)",
@@ -54,14 +54,16 @@ const PostPage = () => {
           <ArrowLeft />
           Back to Posts
         </Button>
-        <h1 className="text-4xl font-bold text-white mb-2">{post.title}</h1>
-        <div className="flex flex-col md:flex-row md:items-center gap-4">
-          <p className="text-sm font-normal text-white my-4 flex items-end gap-2 ">
-            <User className="text-gray-400" />
-            Leanne Graham
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2">
+          {post.title}
+        </h1>
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+          <p className="text-xs sm:text-sm font-normal text-white my-2 sm:my-4 flex items-center gap-2">
+            <User className="text-gray-400 w-4 h-4 sm:w-5 sm:h-5" />
+            post id : {post.id} - Leanne Graham
           </p>
-          <p className="text-sm font-normal text-white my-4 flex items-end gap-2">
-            <Calendar className="text-gray-400" />
+          <p className="text-xs sm:text-sm font-normal text-white my-2 sm:my-4 flex items-center gap-2">
+            <Calendar className="text-gray-400 w-4 h-4 sm:w-5 sm:h-5" />
             {new Date()
               .toLocaleDateString("en-US", {
                 weekday: "short",
@@ -84,8 +86,10 @@ const PostPage = () => {
           </p>
         </div>
       </div>
-      <div className="p-6 bg-white/70 backdrop-blur-md w-full h-full rounded-b-2xl">
-        <p className=" font-normal text-lg leading-relaxed w-96">{post.body}</p>
+      <div className="p-4 sm:p-6 lg:p-8 bg-white/70 backdrop-blur-md w-full h-full rounded-b-2xl">
+        <p className="font-normal text-base sm:text-lg leading-relaxed  max-w-prose line-clamp-4 w-full md:w-96 ">
+          {post.body}
+        </p>
       </div>
     </div>
   );
