@@ -34,7 +34,7 @@ This project is a modern React-based web application designed for managing and d
 
 1. **Clone the repository**:
    ```bash
-   git clone <your-repository-link>
+   git clone https://github.com/Abdosamiir/elevate-taks.git
    ```
 2. **Navigate to the project folder**:
    ```bash
