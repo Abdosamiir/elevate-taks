@@ -8,6 +8,7 @@ import Author from "@/app/components/posts/Author";
 import { useGetPostsQuery } from "@/app/services/postsApi";
 import PostsPagination from "@/app/components/posts/Pagination";
 import { useNavigate } from "react-router-dom";
+import type { TPost } from "@/app/schema";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -20,7 +21,7 @@ const HomePage = () => {
   const { data: posts, isLoading, error } = useGetPostsQuery();
 
   const filteredPosts = useMemo(() => {
-    return posts?.filter((post: any) => {
+    return posts?.filter((post: TPost) => {
       const matchesSearch =
         post.title.toLowerCase().includes(search.toLowerCase()) ||
         post.body.toLowerCase().includes(search.toLowerCase());
@@ -85,7 +86,11 @@ const HomePage = () => {
         <Author value={author} onValueChange={handleAuthorChange} />
       </div>
 
-      <PostList posts={paginatedPosts} isLoading={isLoading} error={error} />
+      <PostList
+        posts={paginatedPosts}
+        isLoading={isLoading}
+        error={error ? (error as Error) : null}
+      />
 
       {/* pagination */}
       <PostsPagination

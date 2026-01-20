@@ -1,4 +1,4 @@
-import type { PostListProps } from "@/app/schema";
+import type { PostListProps, TPost } from "@/app/schema";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useNavigate } from "react-router-dom";
 
@@ -22,7 +22,7 @@ const PostList = ({ posts, isLoading, error }: PostListProps) => {
       ) : (
         <div className="flex flex-col bg-white/30 backdrop-blur-md ">
           {posts && posts.length > 0 ? (
-            posts.map((post: any) => (
+            posts.map((post: TPost) => (
               <div
                 key={post.id}
                 className=" bg-white/50 hover:bg-white/70 p-4 cursor-pointer shadow-sm hover:shadow-md transition-all duration-200 border-b border-white/20 last:border-0"

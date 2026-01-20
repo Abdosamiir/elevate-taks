@@ -1,7 +1,7 @@
 export interface PostListProps {
   posts: TPost[] | undefined;
   isLoading: boolean;
-  error: string | null;
+  error: Error | null;
 }
 
 export interface PostsPaginationProps {
