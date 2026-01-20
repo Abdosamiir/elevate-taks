@@ -10,7 +10,7 @@ export function App() {
         backgroundImage: `url(${photo})`,
       }}
     >
-      <div className="min-h-screen flex flex-col gap-6 mx-auto w-3/4 py-4">
+      <div className="min-h-screen flex flex-col gap-6 mx-auto md:w-3/4 p-4">
         <Header />
         <section className="container mx-auto">
           <Outlet />

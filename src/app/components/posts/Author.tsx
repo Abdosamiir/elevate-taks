@@ -12,17 +12,20 @@ import type { AuthorProps } from "@/app/schema";
 const Author = ({ value, onValueChange }: AuthorProps) => {
   return (
     <Field orientation="horizontal" className="w-fit justify-end">
-      <FieldLabel htmlFor="small-form-role" className="flex-none">
+      <FieldLabel
+        htmlFor="small-form-role"
+        className="flex-none hidden md:flex"
+      >
         Author :
       </FieldLabel>
       <Select value={value} onValueChange={onValueChange}>
         <SelectTrigger
           id="small-form-role"
-          className="bg-white w-36 text-black!"
+          className="bg-white md:w-36 text-black!"
         >
           <SelectValue placeholder="All" />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent position="popper" align="end">
           <SelectGroup>
             <SelectItem value="all">All</SelectItem>
             <SelectItem value="1">Developer</SelectItem>

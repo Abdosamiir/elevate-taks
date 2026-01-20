@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Plus, ScrollText, Search } from "lucide-react";
 
@@ -57,11 +57,11 @@ const HomePage = () => {
   return (
     <>
       <div className="flex items-center justify-between p-4 bg-white rounded-t-2xl">
-        <div className="flex items-center gap-2 capitalize font-semibold text-xl">
+        <div className="flex items-center gap-2 capitalize font-semibold text-lg md:text-xl">
           <ScrollText /> post list
         </div>
         <Button
-          className="flex items-center gap-1 cursor-pointer text-gray-400"
+          className={`flex items-center gap-1 cursor-pointer text-gray-400 ${buttonVariants({ variant: "ghost", size: "xs" })}`}
           variant={"ghost"}
           onClick={() => navigate("/create-post")}
         >
@@ -70,14 +70,14 @@ const HomePage = () => {
         </Button>
       </div>
 
-      <div className="flex items-center justify-between gap-10 p-4 bg-white/50 backdrop-blur-lg">
+      <div className="flex items-center justify-between gap-1 md:gap-10 p-4 bg-white/50 backdrop-blur-lg">
         {/* search input */}
-        <div className="relative w-full">
+        <div className="relative w-full flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground w-4 h-4" />
           <Input
             type="text"
             placeholder="Search for a post "
-            className="w-full rounded-full bg-white pl-10"
+            className="w-full rounded-full bg-white  pl-8 md:pl-10"
             value={search}
             onChange={(e) => handleSearchChange(e.target.value)}
           />

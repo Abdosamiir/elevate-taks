@@ -26,25 +26,55 @@ const PostsPagination = ({
 
   const getPageRange = () => {
     const range: (number | string)[] = [];
-    const delta = 1; // Number of pages either side of current page
+
+    // For mobile: show first, current (if not first/last), ellipsis, and last
+    if (window.innerWidth < 640) {
+      range.push(1);
+
+      if (totalPages > 2) {
+        if (currentPage === 1 || currentPage === totalPages) {
+          // On first or last page: 1 ... 10
+          range.push("ellipsis-1");
+        } else if (currentPage === 2) {
+          // On second page: 1 2 ... 10
+          range.push(2);
+          range.push("ellipsis-2");
+        } else if (currentPage === totalPages - 1) {
+          // On second-to-last: 1 ... 9 10
+          range.push("ellipsis-1");
+          range.push(currentPage);
+        } else {
+          // Middle pages: 1 ... 5 ... 10
+          range.push("ellipsis-1");
+          range.push(currentPage);
+          range.push("ellipsis-2");
+        }
+      }
+
+      if (totalPages > 1) {
+        range.push(totalPages);
+      }
+
+      return range;
+    }
+
+    // For desktop: existing logic
+    const delta = 1;
 
     if (totalPages <= 7) {
       for (let i = 1; i <= totalPages; i++) range.push(i);
       return range;
     }
 
-    // Always include first page
     range.push(1);
 
     if (currentPage > 1 + delta + 1) {
       range.push("ellipsis-1");
     }
 
-    // Dynamic range around current page
     const start = Math.max(2, currentPage - delta);
     const end = Math.min(totalPages - 1, currentPage + delta);
 
-    // Adjust range if we are at the very beginning or end
     let adjustedStart = start;
     let adjustedEnd = end;
 
@@ -66,7 +96,6 @@ const PostsPagination = ({
       range.push("ellipsis-2");
     }
 
-    // Always include last page
     range.push(totalPages);
 
     return range;
@@ -75,7 +104,7 @@ const PostsPagination = ({
   const pages = getPageRange();
 
   return (
-    <div className="py-4 flex justify-center bg-white rounded-b-2xl">
+    <div className="py-4 flex items-center justify-center bg-white rounded-b-2xl px-2">
       <Pagination>
         <PaginationContent>
           <PaginationItem>
@@ -86,7 +115,7 @@ const PostsPagination = ({
                 handlePageChange(currentPage - 2);
               }}
               className={
-                currentPage === 2 ? "pointer-events-none opacity-50" : ""
+                currentPage <= 2 ? "pointer-events-none opacity-50" : ""
               }
             />
           </PaginationItem>
@@ -114,7 +143,11 @@ const PostsPagination = ({
                     handlePageChange(page);
                   }}
                   isActive={currentPage === page}
-                  className={`rounded-full border border-gray-200 ${currentPage === page ? "bg-[#2F80ED] text-primary-foreground" : ""}`}
+                  className={`rounded-full border border-gray-200 ${
+                    currentPage === page
+                      ? "bg-[#2F80ED] text-primary-foreground"
+                      : ""
+                  }`}
                 >
                   {page}
                 </PaginationLink>
@@ -147,7 +180,7 @@ const PostsPagination = ({
                 handlePageChange(currentPage + 2);
               }}
               className={
-                currentPage === totalPages
+                currentPage >= totalPages - 1
                   ? "pointer-events-none opacity-50"
                   : ""
               }
