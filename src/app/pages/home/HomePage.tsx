@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { useSelector } from "react-redux";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Plus, ScrollText, Search } from "lucide-react";
@@ -6,6 +7,7 @@ import { Plus, ScrollText, Search } from "lucide-react";
 import PostList from "@/app/components/posts/PostList";
 import Author from "@/app/components/posts/Author";
 import { useGetPostsQuery } from "@/app/services/postsApi";
+import { selectAllLocalPosts } from "@/app/services/localPostsSlice";
 import PostsPagination from "@/app/components/posts/Pagination";
 import { useNavigate } from "react-router-dom";
 import type { TPost } from "@/app/schema";
@@ -18,10 +20,16 @@ const HomePage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
 
+  const localPosts = useSelector(selectAllLocalPosts);
   const { data: posts, isLoading, error } = useGetPostsQuery();
 
+  // Combine local posts with API posts (local posts first)
+  const allPosts = useMemo(() => {
+    return [...localPosts, ...(posts || [])];
+  }, [localPosts, posts]);
+
   const filteredPosts = useMemo(() => {
-    return posts?.filter((post: TPost) => {
+    return allPosts?.filter((post: TPost) => {
       const matchesSearch =
         post.title.toLowerCase().includes(search.toLowerCase()) ||
         post.body.toLowerCase().includes(search.toLowerCase());
@@ -31,7 +39,7 @@ const HomePage = () => {
 
       return matchesSearch && matchesAuthor;
     });
-  }, [posts, search, author]);
+  }, [allPosts, search, author]);
 
   const totalPages = Math.ceil((filteredPosts?.length || 0) / ITEMS_PER_PAGE);
 

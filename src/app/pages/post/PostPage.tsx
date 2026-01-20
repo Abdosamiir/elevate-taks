@@ -1,17 +1,34 @@
 import { useParams, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { useGetPostByIdQuery } from "@/app/services/postsApi";
+import { selectLocalPostById } from "@/app/services/localPostsSlice";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Calendar, User } from "lucide-react";
+import type { RootState } from "@/app/services/store";
 
 const PostPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { data: post, isLoading, error } = useGetPostByIdQuery(Number(id));
+
+  // Get local post from Redux (instant, no useEffect needed)
+  const localPost = useSelector((state: RootState) =>
+    selectLocalPostById(state, Number(id)),
+  );
+
+  const {
+    data: apiPost,
+    isLoading,
+    error,
+  } = useGetPostByIdQuery(Number(id), {
+    skip: !!localPost, // Skip API call if we found a local post
+  });
+
+  const post = localPost || apiPost;
 
   console.log(post);
 
-  if (isLoading) {
+  if (isLoading && !localPost) {
     return (
       <div className="max-w-2xl mx-auto p-6 space-y-4">
         <Skeleton className="h-8 w-3/4 bg-white/50" />
@@ -21,7 +38,7 @@ const PostPage = () => {
     );
   }
 
-  if (error || !post) {
+  if ((error || !post) && !localPost) {
     return (
       <div className="max-w-2xl mx-auto p-6">
         <div className="p-4 bg-red-500/20 backdrop-blur-sm text-center text-white rounded-2xl">
@@ -55,12 +72,12 @@ const PostPage = () => {
           Back to Posts
         </Button>
         <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2">
-          {post.title}
+          {post?.title}
         </h1>
         <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
           <p className="text-xs sm:text-sm font-normal text-white my-2 sm:my-4 flex items-center gap-2">
             <User className="text-gray-400 w-4 h-4 sm:w-5 sm:h-5" />
-            post id : {post.id} - Leanne Graham
+            post id : {post?.id} - Leanne Graham
           </p>
           <p className="text-xs sm:text-sm font-normal text-white my-2 sm:my-4 flex items-center gap-2">
             <Calendar className="text-gray-400 w-4 h-4 sm:w-5 sm:h-5" />
@@ -88,7 +105,7 @@ const PostPage = () => {
       </div>
       <div className="p-4 sm:p-6 lg:p-8 bg-white/70 backdrop-blur-md w-full h-full rounded-b-2xl">
         <p className="font-normal text-base sm:text-lg leading-relaxed  max-w-prose line-clamp-4 w-full md:w-96 ">
-          {post.body}
+          {post?.body}
         </p>
       </div>
     </div>

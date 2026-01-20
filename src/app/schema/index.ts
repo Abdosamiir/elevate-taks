@@ -1,3 +1,5 @@
+import z from "zod";
+
 export interface PostListProps {
   posts: TPost[] | undefined;
   isLoading: boolean;
@@ -21,3 +23,17 @@ export type TPost = {
   title: string;
   body: string;
 };
+
+export const createPostSchema = z.object({
+  title: z
+    .string()
+    .min(1, "Post title is required")
+    .min(3, "Title must be at least 3 characters"),
+  body: z
+    .string()
+    .min(1, "Post body is required")
+    .min(10, "Body must be at least 10 characters"),
+  author: z.string().min(1, "Please select an author for this post"),
+});
+
+export type CreatePostFormData = z.infer<typeof createPostSchema>;
