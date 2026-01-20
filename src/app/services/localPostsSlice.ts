@@ -27,8 +27,16 @@ const localPostsSlice = createSlice({
       state.posts.unshift(action.payload);
       localStorage.setItem("localPosts", JSON.stringify(state.posts));
     },
-    getPostById: (state) => {
-      return state;
+    updatePost: (state, action: PayloadAction<TPost>) => {
+      const index = state.posts.findIndex((p) => p.id === action.payload.id);
+      if (index !== -1) {
+        state.posts[index] = action.payload;
+        localStorage.setItem("localPosts", JSON.stringify(state.posts));
+      }
+    },
+    deletePost: (state, action: PayloadAction<number>) => {
+      state.posts = state.posts.filter((p) => p.id !== action.payload);
+      localStorage.setItem("localPosts", JSON.stringify(state.posts));
     },
   },
   selectors: {
@@ -38,7 +46,7 @@ const localPostsSlice = createSlice({
   },
 });
 
-export const { addPost } = localPostsSlice.actions;
+export const { addPost, updatePost, deletePost } = localPostsSlice.actions;
 export const { selectAllLocalPosts, selectLocalPostById } =
   localPostsSlice.selectors;
 export default localPostsSlice.reducer;

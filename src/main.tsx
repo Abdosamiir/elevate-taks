@@ -10,6 +10,7 @@ import HomePage from "./app/pages/home/HomePage.tsx";
 import PostPage from "./app/pages/post/PostPage.tsx";
 import ErrorPage from "./app/pages/error/ErrorPage.tsx";
 import CreatePost from "./app/components/forms/CreatePost.tsx";
+import EditPost from "./app/components/forms/EditPost.tsx";
 
 const router = createBrowserRouter(
   [
@@ -29,6 +30,10 @@ const router = createBrowserRouter(
         {
           path: "create-post",
           element: <CreatePost />,
+        },
+        {
+          path: "edit-post/:id",
+          element: <EditPost />,
         },
       ],
     },
