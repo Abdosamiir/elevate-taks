@@ -1,7 +1,7 @@
 export interface PostListProps {
-  posts: any[] | undefined;
+  posts: TPost[] | undefined;
   isLoading: boolean;
-  error: any;
+  error: string | null;
 }
 
 export interface PostsPaginationProps {
@@ -14,3 +14,10 @@ export interface AuthorProps {
   value: string;
   onValueChange: (value: string) => void;
 }
+
+export type TPost = {
+  userId: number;
+  id: number;
+  title: string;
+  body: string;
+};

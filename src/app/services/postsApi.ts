@@ -1,12 +1,13 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import type { TPost } from "../schema";
 
 export const postsApi = createApi({
   reducerPath: "postsApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://jsonplaceholder.typicode.com",
+    baseUrl: import.meta.env.VITE_API_URL, // For Vite
   }),
   endpoints: ({ query }) => ({
-    getPosts: query<any[], void>({
+    getPosts: query<TPost[], void>({
       query: () => "/posts",
     }),
   }),
