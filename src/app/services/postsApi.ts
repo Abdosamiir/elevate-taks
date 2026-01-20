@@ -10,7 +10,10 @@ export const postsApi = createApi({
     getPosts: query<TPost[], void>({
       query: () => "/posts",
     }),
+    getPostById: query<TPost, number>({
+      query: (id) => `/posts/${id}`,
+    }),
   }),
 });
 
-export const { useGetPostsQuery } = postsApi;
+export const { useGetPostsQuery, useGetPostByIdQuery } = postsApi;
